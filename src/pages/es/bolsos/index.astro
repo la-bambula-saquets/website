@@ -17,7 +17,12 @@ const statusLabels: Record<string, string> = {
 ---
 
 <BaseLayout title="Bolsos | La Bambula Saquets">
-  <h2>Bolsos</h2>
+  <section class="page-header">
+    <h2>Bolsos</h2>
+    <p>
+      Piezas artesanales creadas con calma, materiales seleccionados y carácter mediterráneo.
+    </p>
+  </section>
 
   {products.length === 0 ? (
     <p>No hay productos publicados todavía.</p>
@@ -25,62 +30,155 @@ const statusLabels: Record<string, string> = {
     <div class="grid">
       {products.map((product: any) => (
         <article class="card">
-          {product.main_image && (
-            <img src={product.main_image} alt={product.name_es} />
-          )}
+          <a class="image-link" href={`/es/bolsos/${product.slug}`}>
+            {product.main_image && (
+              <img src={product.main_image} alt={product.name_es} />
+            )}
+          </a>
 
-          <h3>
-            <a href={`/es/bolsos/${product.slug}`}>
-              {product.name_es}
-            </a>
-          </h3>
+          <div class="card-content">
+            <div class={`status status-${product.status}`}>
+              {statusLabels[product.status] ?? product.status}
+            </div>
 
-          <p>{product.short_description_es}</p>
+            <h3>
+              <a href={`/es/bolsos/${product.slug}`}>
+                {product.name_es}
+              </a>
+            </h3>
 
-          <p>
-            <strong>Estado:</strong>{" "}
-            {statusLabels[product.status] ?? product.status}
-          </p>
+            <p class="description">{product.short_description_es}</p>
 
-          <p>
-            <strong>Materiales:</strong> {product.materials}
-          </p>
+            <dl class="details">
+              <div>
+                <dt>Materiales</dt>
+                <dd>{product.materials}</dd>
+              </div>
 
-          <p>
-            <strong>Dimensiones:</strong> {product.dimensions}
-          </p>
+              <div>
+                <dt>Dimensiones</dt>
+                <dd>{product.dimensions}</dd>
+              </div>
+            </dl>
+          </div>
         </article>
       ))}
     </div>
   )}
 
   <style>
+    .page-header {
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    .page-header h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    .page-header p {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
     .grid {
       display: grid;
-      gap: 16px;
+      gap: 24px;
       grid-template-columns: 1fr;
     }
 
     .card {
-      border: 1px solid #ddd;
-      padding: 16px;
-      background: white;
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
     }
 
-    img {
-      width: 100%;
-      height: auto;
+    .image-link {
       display: block;
-      margin-bottom: 12px;
+      background: #f7f3ef;
+      overflow: hidden;
     }
 
-    @media (min-width: 600px) {
+    .image-link img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      display: block;
+      transition: transform 180ms ease;
+    }
+
+    .image-link:hover img {
+      transform: scale(1.02);
+    }
+
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status {
+      align-self: flex-start;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .status-sold {
+      border-color: #9b6b5a;
+      color: #9b6b5a;
+    }
+
+    .status-made_to_order {
+      border-color: var(--color-text);
+      color: var(--color-text);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+
+    .description {
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .details {
+      margin: 4px 0 0;
+      display: grid;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .details div {
+      display: grid;
+      gap: 2px;
+    }
+
+    dt {
+      font-weight: bold;
+    }
+
+    dd {
+      margin: 0;
+    }
+
+    @media (min-width: 650px) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (min-width: 900px) {
+    @media (min-width: 950px) {
       .grid {
         grid-template-columns: repeat(3, 1fr);
       }
