@@ -1,4 +1,6 @@
 ---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
 const productModules = import.meta.glob("../../../content/products/*.md", {
   eager: true,
 });
@@ -14,60 +16,74 @@ const statusLabels: Record<string, string> = {
 };
 ---
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Bolsos | La Bambula Saquets</title>
-  </head>
+<BaseLayout title="Bolsos | La Bambula Saquets">
+  <h2>Bolsos</h2>
 
-  <body>
-    <nav>
-      <a href="/es/bolsos">ES</a>
-      |
-      <a href="/ca/bosses">CA</a>
-    </nav>
+  {products.length === 0 ? (
+    <p>No hay productos publicados todavía.</p>
+  ) : (
+    <div class="grid">
+      {products.map((product: any) => (
+        <article class="card">
+          {product.main_image && (
+            <img src={product.main_image} alt={product.name_es} />
+          )}
 
-    <h1>Bolsos</h1>
+          <h3>
+            <a href={`/es/bolsos/${product.slug}`}>
+              {product.name_es}
+            </a>
+          </h3>
 
-    {
-      products.length === 0 ? (
-        <p>No hay productos publicados todavía.</p>
-      ) : (
-        <ul>
-          {products.map((product: any) => (
-            <li>
-              {product.main_image && (
-                <img
-                  src={product.main_image}
-                  alt={product.name_es}
-                  width="300"
-                />
-              )}
+          <p>{product.short_description_es}</p>
 
-              <h2>
-                <a href={`/es/bolsos/${product.slug}`}>
-                  {product.name_es}
-                </a>
-              </h2>
+          <p>
+            <strong>Estado:</strong>{" "}
+            {statusLabels[product.status] ?? product.status}
+          </p>
 
-              <p>{product.short_description_es}</p>
+          <p>
+            <strong>Materiales:</strong> {product.materials}
+          </p>
 
-              <p>
-                <strong>Estado:</strong>{" "}
-                {statusLabels[product.status] ?? product.status}
-              </p>
+          <p>
+            <strong>Dimensiones:</strong> {product.dimensions}
+          </p>
+        </article>
+      ))}
+    </div>
+  )}
 
-              <p>
-                <strong>Materiales:</strong> {product.materials}
-              </p>
-
-              <p>
-                <strong>Dimensiones:</strong> {product.dimensions}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )
+  <style>
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
     }
-  </body>
-</html>
+
+    .card {
+      border: 1px solid #ddd;
+      padding: 16px;
+      background: white;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,4 +1,6 @@
 ---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
 export function getStaticPaths() {
   const productModules = import.meta.glob("../../../content/products/*.md", {
     eager: true,
@@ -31,82 +33,137 @@ const whatsappMessage = `Hola, me interesa este bolso: ${product.name_es}`;
 const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`;
 ---
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>{product.name_es} | La Bambula Saquets</title>
-  </head>
-
-  <body>
-    <nav>
-      <a href={`/es/bolsos/${product.slug}`}>ES</a>
-      |
-      <a href={`/ca/bosses/${product.slug}`}>CA</a>
-    </nav>
-
-    <p>
+<BaseLayout title={`${product.name_es} | La Bambula Saquets`}>
+  <article class="product-detail">
+    <p class="back-link">
       <a href="/es/bolsos">← Volver a bolsos</a>
     </p>
 
-    <h1>{product.name_es}</h1>
+    <div class="product-layout">
+      {product.main_image && (
+        <div class="product-image">
+          <img src={product.main_image} alt={product.name_es} />
+        </div>
+      )}
 
-    {
-      product.main_image && (
-        <img src={product.main_image} alt={product.name_es} />
-      )
-    }
+      <div class="product-info">
+        <h2>{product.name_es}</h2>
 
-    {
-      Array.isArray(product.images) && product.images.length > 0 && (
-        <section>
-          <h2>Galería</h2>
+        <p>{product.long_description_es}</p>
 
-          <ul>
-            {product.images.map((item: any) => (
-              <li>
-                <img src={item.image} alt={product.name_es} />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <p>{product.long_description_es}</p>
-
-    <p>
-      <strong>Estado:</strong>
-      {statusLabels[product.status] ?? product.status}
-    </p>
-
-    <p>
-      <strong>Materiales:</strong>
-      {product.materials}
-    </p>
-
-    <p>
-      <strong>Dimensiones:</strong>
-      {product.dimensions}
-    </p>
-
-    <p>
-      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-        Consultar por WhatsApp
-      </a>
-    </p>
-
-    {
-      product.instagram_url && (
         <p>
-          <a
-            href={product.instagram_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ver en Instagram
+          <strong>Estado:</strong>{" "}
+          {statusLabels[product.status] ?? product.status}
+        </p>
+
+        <p>
+          <strong>Materiales:</strong> {product.materials}
+        </p>
+
+        <p>
+          <strong>Dimensiones:</strong> {product.dimensions}
+        </p>
+
+        <p>
+          <a class="button" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+            Consultar por WhatsApp
           </a>
         </p>
-      )
+
+        {product.instagram_url && (
+          <p>
+            <a href={product.instagram_url} target="_blank" rel="noopener noreferrer">
+              Ver en Instagram
+            </a>
+          </p>
+        )}
+      </div>
+    </div>
+
+    {Array.isArray(product.images) && product.images.length > 0 && (
+      <section class="gallery">
+        <h3>Galería</h3>
+
+        <ul>
+          {product.images.map((item: any) => (
+            <li>
+              <img src={item.image} alt={product.name_es} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+
+  <style>
+    .back-link {
+      margin-bottom: 24px;
     }
-  </body>
-</html>
+
+    .product-layout {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: white;
+    }
+
+    .product-info {
+      background: white;
+      padding: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 16px;
+      background: var(--color-accent);
+      color: white;
+      text-decoration: none;
+      margin-top: 12px;
+    }
+
+    .button:hover {
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    .gallery {
+      margin-top: 32px;
+    }
+
+    .gallery ul {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: white;
+    }
+
+    @media (min-width: 700px) {
+      .gallery ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 800px) {
+      .product-layout {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+  </style>
+</BaseLayout>
