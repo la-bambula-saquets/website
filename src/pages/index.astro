@@ -1,16 +1,98 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>La Bambula Saquets</title>
-  </head>
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
 
-  <body>
-    <h1>La Bambula Saquets</h1>
+<BaseLayout title="La Bambula Saquets">
+  <section class="home">
+    <div class="intro">
+      <h2>La Bambula Saquets</h2>
+      <p class="tagline">
+        Saquets hechos despacio, con telas que cuentan historias.
+        <br />
+        Saquets fets a poc a poc, amb teles que expliquen històries.
+      </p>
+    </div>
 
-    <nav>
-      <a href="/es/bolsos">Castellano</a>
-      |
-      <a href="/ca/bosses">Català</a>
-    </nav>
-  </body>
-</html>
+    <div class="language-selector">
+      <a class="button primary" href="/es/bolsos"> Ver colección (ES) </a>
+
+      <a class="button secondary" href="/ca/bosses"> Veure col·lecció (CA) </a>
+    </div>
+  </section>
+
+  <style>
+    .home {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .intro h2 {
+      margin: 0 0 16px;
+      font-size: 2.2rem;
+      line-height: 1.2;
+    }
+
+    .intro p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    .language-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 14px 22px;
+      text-decoration: none;
+      font-weight: bold;
+      min-width: 240px;
+    }
+
+    .primary {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .secondary {
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      background: transparent;
+    }
+
+    .primary:hover,
+    .secondary:hover {
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .tagline br {
+      display: block;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 600px) {
+      .language-selector {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .button {
+        min-width: 220px;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -36,15 +36,17 @@ const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(wh
 <BaseLayout title={`${product.name_es} | La Bambula Saquets`}>
   <article class="product-detail">
     <p class="back-link">
-      <a href="/es/bolsos">← Volver a bolsos</a>
+      <a href="/es/bolsos">← Volver a la colección</a>
     </p>
 
     <section class="product-layout">
-      {product.main_image && (
-        <div class="product-image">
-          <img src={product.main_image} alt={product.name_es} />
-        </div>
-      )}
+      {
+        product.main_image && (
+          <div class="product-image">
+            <img src={product.main_image} alt={product.name_es} />
+          </div>
+        )
+      }
 
       <div class="product-info">
         <span class={`status status-${product.status}`}>
@@ -67,33 +69,46 @@ const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(wh
           </div>
         </dl>
 
-        <a class="button" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+        <a
+          class="button"
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Consultar por WhatsApp
         </a>
 
-        {product.instagram_url && (
-          <p class="secondary-link">
-            <a href={product.instagram_url} target="_blank" rel="noopener noreferrer">
-              Ver en Instagram
-            </a>
-          </p>
-        )}
+        {
+          product.instagram_url && (
+            <p class="secondary-link">
+              <a
+                href={product.instagram_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver en Instagram
+              </a>
+            </p>
+          )
+        }
       </div>
     </section>
 
-    {Array.isArray(product.images) && product.images.length > 0 && (
-      <section class="gallery">
-        <h3>Galería</h3>
+    {
+      Array.isArray(product.images) && product.images.length > 0 && (
+        <section class="gallery">
+          <h3>Galería</h3>
 
-        <ul>
-          {product.images.map((item: any) => (
-            <li>
-              <img src={item.image} alt={product.name_es} />
-            </li>
-          ))}
-        </ul>
-      </section>
-    )}
+          <ul>
+            {product.images.map((item: any) => (
+              <li>
+                <img src={item.image} alt={product.name_es} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </article>
 
   <style>
