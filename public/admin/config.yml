@@ -11,3 +11,38 @@ collections:
     folder: "src/content/products"
     create: true
     slug: "{{slug}}"
+
+    fields:
+      - { label: "Slug", name: "slug", widget: "string" }
+
+      - { label: "Name (Spanish)", name: "name_es", widget: "string" }
+      - { label: "Name (Catalan)", name: "name_ca", widget: "string" }
+
+      - { label: "Short Description (ES)", name: "short_description_es", widget: "text" }
+      - { label: "Short Description (CA)", name: "short_description_ca", widget: "text" }
+
+      - { label: "Long Description (ES)", name: "long_description_es", widget: "text" }
+      - { label: "Long Description (CA)", name: "long_description_ca", widget: "text" }
+
+      - { label: "Materials", name: "materials", widget: "string" }
+      - { label: "Dimensions", name: "dimensions", widget: "string" }
+
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options:
+          - { label: "Available", value: "available" }
+          - { label: "Sold", value: "sold" }
+          - { label: "Made to order", value: "made_to_order" }
+
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Order", name: "order", widget: "number", required: false }
+
+      - { label: "Main Image", name: "main_image", widget: "image" }
+
+      - label: "Gallery Images"
+        name: "images"
+        widget: "list"
+        field: { label: "Image", name: "image", widget: "image" }
+
+      - { label: "Instagram URL", name: "instagram_url", widget: "string", required: false }
