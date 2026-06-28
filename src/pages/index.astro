@@ -1,50 +1,9 @@
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <title>Astro</title>
-    <meta name="viewport" content="width=device-width" />
-
-    <script
-      is:inline
-      src="https://identity.netlify.com/v1/netlify-identity-widget.js"
-    ></script>
+    <title>La Bambula Saquets</title>
   </head>
 
   <body>
-    <h1>Astro</h1>
-
-    <script is:inline>
-      (function () {
-        function hasIdentityToken() {
-          const hash = window.location.hash || "";
-
-          return (
-            hash.includes("invite_token") ||
-            hash.includes("recovery_token") ||
-            hash.includes("confirmation_token")
-          );
-        }
-
-        function openIdentityIfNeeded() {
-          if (!hasIdentityToken()) {
-            return;
-          }
-
-          if (window.netlifyIdentity) {
-            window.netlifyIdentity.open();
-          }
-        }
-
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", function () {
-            openIdentityIfNeeded();
-          });
-
-          openIdentityIfNeeded();
-        } else {
-          setTimeout(openIdentityIfNeeded, 500);
-        }
-      })();
-    </script>
+    <h1>La Bambula Saquets</h1>
   </body>
 </html>
