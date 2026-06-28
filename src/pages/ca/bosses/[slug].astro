@@ -1,0 +1,116 @@
+---
+export function getStaticPaths() {
+  const productModules = import.meta.glob("../../../content/products/*.md", {
+    eager: true,
+  });
+
+  const products = Object.values(productModules).map(
+    (module: any) => module.frontmatter,
+  );
+
+  return products.map((product: any) => ({
+    params: {
+      slug: product.slug,
+    },
+    props: {
+      product,
+    },
+  }));
+}
+
+const { product } = Astro.props;
+
+const statusLabels: Record<string, string> = {
+  available: "Disponible",
+  sold: "Venut",
+  made_to_order: "Per encàrrec",
+};
+
+const whatsappPhone = "34687562377";
+const whatsappMessage = `Hola, m'interessa aquesta bossa: ${product.name_ca}`;
+const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{product.name_ca} | La Bambula Saquets</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href={`/es/bolsos/${product.slug}`}>ES</a>
+      |
+      <a href={`/ca/bosses/${product.slug}`}>CA</a>
+    </nav>
+
+    <p>
+      <a href="/ca/bosses">← Tornar a bosses</a>
+    </p>
+
+    <h1>{product.name_ca}</h1>
+
+    {
+      product.main_image && (
+        <img src={product.main_image} alt={product.name_ca} />
+      )
+    }
+
+    {
+      Array.isArray(product.images) && product.images.length > 0 && (
+        <section>
+          <h2>Galería</h2>
+
+          <ul>
+            {product.images.map((item: any) => (
+              <li>
+                <img src={item.image} alt={product.name_ca} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <p>{product.long_description_es}</p>
+
+<p>{product.long_description_ca}</p>
+
+    <p>{product.long_description_ca}</p>
+
+    <p>
+      <strong>Estat:</strong>
+      {statusLabels[product.status] ?? product.status}
+    </p>
+
+    <p>
+      <strong>Materials:</strong>
+      {product.materials}
+    </p>
+
+    <p>
+      <strong>Dimensions:</strong>
+      {product.dimensions}
+    </p>
+
+    <p>
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+        Consultar per WhatsApp
+      </a>
+    </p>
+
+    {
+      product.instagram_url && (
+        <p>
+          <a
+            href={product.instagram_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Veure a Instagram
+          </a>
+        </p>
+      )
+    }
+  </body>
+</html>

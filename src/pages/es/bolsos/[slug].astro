@@ -1,0 +1,112 @@
+---
+export function getStaticPaths() {
+  const productModules = import.meta.glob("../../../content/products/*.md", {
+    eager: true,
+  });
+
+  const products = Object.values(productModules).map(
+    (module: any) => module.frontmatter,
+  );
+
+  return products.map((product: any) => ({
+    params: {
+      slug: product.slug,
+    },
+    props: {
+      product,
+    },
+  }));
+}
+
+const { product } = Astro.props;
+
+const statusLabels: Record<string, string> = {
+  available: "Disponible",
+  sold: "Vendido",
+  made_to_order: "Bajo pedido",
+};
+
+const whatsappPhone = "34687562377";
+const whatsappMessage = `Hola, me interesa este bolso: ${product.name_es}`;
+const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{product.name_es} | La Bambula Saquets</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href={`/es/bolsos/${product.slug}`}>ES</a>
+      |
+      <a href={`/ca/bosses/${product.slug}`}>CA</a>
+    </nav>
+
+    <p>
+      <a href="/es/bolsos">← Volver a bolsos</a>
+    </p>
+
+    <h1>{product.name_es}</h1>
+
+    {
+      product.main_image && (
+        <img src={product.main_image} alt={product.name_es} />
+      )
+    }
+
+    {
+      Array.isArray(product.images) && product.images.length > 0 && (
+        <section>
+          <h2>Galería</h2>
+
+          <ul>
+            {product.images.map((item: any) => (
+              <li>
+                <img src={item.image} alt={product.name_es} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <p>{product.long_description_es}</p>
+
+    <p>
+      <strong>Estado:</strong>
+      {statusLabels[product.status] ?? product.status}
+    </p>
+
+    <p>
+      <strong>Materiales:</strong>
+      {product.materials}
+    </p>
+
+    <p>
+      <strong>Dimensiones:</strong>
+      {product.dimensions}
+    </p>
+
+    <p>
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+        Consultar por WhatsApp
+      </a>
+    </p>
+
+    {
+      product.instagram_url && (
+        <p>
+          <a
+            href={product.instagram_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ver en Instagram
+          </a>
+        </p>
+      )
+    }
+  </body>
+</html>

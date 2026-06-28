@@ -1,0 +1,73 @@
+---
+const productModules = import.meta.glob("../../../content/products/*.md", {
+  eager: true,
+});
+
+const products = Object.values(productModules)
+  .map((module: any) => module.frontmatter)
+  .sort((a: any, b: any) => (a.order ?? 999) - (b.order ?? 999));
+
+const statusLabels: Record<string, string> = {
+  available: "Disponible",
+  sold: "Vendido",
+  made_to_order: "Bajo pedido",
+};
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Bolsos | La Bambula Saquets</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href="/es/bolsos">ES</a>
+      |
+      <a href="/ca/bosses">CA</a>
+    </nav>
+
+    <h1>Bolsos</h1>
+
+    {
+      products.length === 0 ? (
+        <p>No hay productos publicados todavía.</p>
+      ) : (
+        <ul>
+          {products.map((product: any) => (
+            <li>
+              {product.main_image && (
+                <img
+                  src={product.main_image}
+                  alt={product.name_es}
+                  width="300"
+                />
+              )}
+
+              <h2>
+                <a href={`/es/bolsos/${product.slug}`}>
+                  {product.name_es}
+                </a>
+              </h2>
+
+              <p>{product.short_description_es}</p>
+
+              <p>
+                <strong>Estado:</strong>{" "}
+                {statusLabels[product.status] ?? product.status}
+              </p>
+
+              <p>
+                <strong>Materiales:</strong> {product.materials}
+              </p>
+
+              <p>
+                <strong>Dimensiones:</strong> {product.dimensions}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </body>
+</html>
