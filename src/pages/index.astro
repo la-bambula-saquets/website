@@ -1,33 +1,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
+    <meta name="viewport" content="width=device-width" />
 
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script
+      is:inline
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+    ></script>
   </head>
 
   <body>
     <h1>Astro</h1>
 
-    <script>
-      if (window.netlifyIdentity) {
-        const hash = window.location.hash;
+    <script is:inline>
+      (function () {
+        function hasIdentityToken() {
+          const hash = window.location.hash || "";
 
-        if (
-          hash &&
-          (
+          return (
             hash.includes("invite_token") ||
             hash.includes("recovery_token") ||
             hash.includes("confirmation_token")
-          )
-        ) {
-          window.netlifyIdentity.open();
+          );
         }
-      }
+
+        function openIdentityIfNeeded() {
+          if (!hasIdentityToken()) {
+            return;
+          }
+
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.open();
+          }
+        }
+
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", function () {
+            openIdentityIfNeeded();
+          });
+
+          openIdentityIfNeeded();
+        } else {
+          setTimeout(openIdentityIfNeeded, 500);
+        }
+      })();
     </script>
   </body>
 </html>
