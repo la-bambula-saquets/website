@@ -100,11 +100,15 @@ const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(wh
           <h3>Galería</h3>
 
           <ul>
-            {product.images.map((item: any) => (
-              <li>
-                <img src={item.image} alt={product.name_es} />
-              </li>
-            ))}
+            {product.images.map((item: any) => {
+              const imagePath = typeof item === "string" ? item : item.image;
+
+              return (
+                <li>
+                  <img src={imagePath} alt={product.name_es} />
+                </li>
+              );
+            })}
           </ul>
         </section>
       )
